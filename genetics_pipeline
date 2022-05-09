@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+#SBATCH --job-name=GLIMPSE3
+#SBATCH --output=run.log
+#SBATCH --error=error.err
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --time=7-01:00
+
+module load Python/Anaconda_v10.2019
+source activate p2
+
+srun bcftools merge -Oz -o full.vcf.gz base.vcf.gz not_imputed.vcf.gz imputed.vcf.gz
+srun bcftools index full.vcf.gz
+
+srun bcftools view full.vcf.gz -r 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 -Oz -o fix_full.vcf.gz
+srun bcftools index fix_full.vcf.gz
+
+srun plink --vcf fix_full.vcf.gz --geno --maf 0.1 --snps-only --chr 1-22 --make-bed --out mmerged
+srun plink --bfile mmerged --indep-pairwise 50 10 0.1
+srun plink --bfile mmerged --extract plink.prune.in --chr 1-22 --make-bed --out full
+rm mmerged.*
+awk '{ if ( length($2) <= 38 ) { print $0; } }'  merged.bim > new.bim
+paste name merged.fam | awk '{printf("%s %s %s %s %s\n", $1, $3, $6, $7, $8, $9}' > new.fam
+srun convertf -p parfile
+paste name merged.ind | awk '{printf("%s %s %s\n", $1, $5, $3)}' > new.ind
+srun smartpca -p parfile1 > smartpca.log
