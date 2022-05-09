@@ -1,0 +1,11 @@
+genotypename: full.geno
+snpname: full.snp
+indivname: new.ind
+evecoutname: merged.evec
+evaloutname: merged.eval
+poplistname: pop
+lsqproject: YES
+numoutevec: 4
+numthreads: 1
+#numoutlierevec: 2
+numoutlieriter: 2
