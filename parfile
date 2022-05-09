@@ -1,0 +1,8 @@
+genotypename: full.bed
+snpname: new.bim
+indivname: new.fam
+outputformat: EIGENSTRAT
+genotypeoutname: full.geno
+snpoutname: full.snp
+indivoutname: full.ind
+familynames: NO
