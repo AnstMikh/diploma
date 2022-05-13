@@ -2,10 +2,9 @@
 
 while getopts ":h" option; do
    case $option in
-      r) python simulator.py ancient.bam reference.fasta modern.bam modern.vcf
+      r) python simulator_readerror.py ancient.bam reference.fasta modern.bam modern.vcf
          exit;;
-     \?) # Invalid option
-         echo "Error: Invalid option"
+     \?) python simulator_noerror.py ancient.bam reference.fasta modern.bam modern.vcf
          exit;;
    esac
 done
